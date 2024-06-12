@@ -11,14 +11,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Build binary
-        run: |
-            cd  ${{ github.workspace }}/BinAr/
-            make
-      - name: Upload binary artifact
-        uses: actions/upload-artifact@v2
-        with:
-            name: build-artifacts
-            path:  ${{ github.workspace }}/BinAr/bin
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install -r utils.txt
+
+    - name: Build application
+      run: |
+        python main.py build
+        
+    - name: Upload binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: binary_release
+        path: r/release
