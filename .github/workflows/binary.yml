@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build binary
         run: |
-            cd  ${{ github.workspace }}/DynArray/
+            cd  ${{ github.workspace }}/BinAr/
             make
       - name: Upload binary artifact
         uses: actions/upload-artifact@v2
         with:
             name: build-artifacts
-            path:  ${{ github.workspace }}/DynArray/bin
+            path:  ${{ github.workspace }}/BinAr/bin
