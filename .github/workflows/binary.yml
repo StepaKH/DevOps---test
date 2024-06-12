@@ -1,0 +1,24 @@
+name: Build Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build binary
+        run: |
+            cd  ${{ github.workspace }}/DynArray/
+            make
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: build-artifacts
+            path:  ${{ github.workspace }}/DynArray/bin
