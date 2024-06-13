@@ -1,6 +1,9 @@
-name: Java CI with Maven, Docker, and Cloud Run
+name: Deploy
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
