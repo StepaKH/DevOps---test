@@ -23,7 +23,7 @@ jobs:
 
       - name: Build project
         run: |
-          python -m compileall .main.py
+          python -m compileall ./task/calculator.py
 
       - name: Create GitHub release
         id: create_release
@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: __pycache__/main.cpython-39.pyc
+          asset_path: ./task/__pycache__/main.cpython-39.pyc
           asset_name: main
           asset_content_type: application/octet-stream
         env:
