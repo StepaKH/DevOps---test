@@ -1,11 +1,10 @@
 FROM python:3.12
 
-ADD main.py /server/
+WORKDIR /app
 
-RUN pip install flet
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /server/
+COPY . .
 
-CMD [ "python", "./main.py" ]
-
-EXPOSE 80
+CMD ["python", "./main.py"]
