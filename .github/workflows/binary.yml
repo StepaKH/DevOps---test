@@ -16,14 +16,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python 
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: "3.x"
 
       - name: Build project
         run: |
-          python -m compileall ./test/calculator.py
+          python -m compileall .main.py
 
       - name: Create GitHub release
         id: create_release
@@ -34,14 +34,14 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./__pycache__/main.cpython-39.pyc
-          asset_name: calculator
+          asset_name: main
           asset_content_type: application/octet-stream
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
