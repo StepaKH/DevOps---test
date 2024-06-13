@@ -9,28 +9,39 @@ on:
       - main
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
 
-    - name: Install dependencies
-      run: |
-        pip install -r utils.txt
+      - name: Build project
+        run: |
+          python -m compileall ./task/calculator.py
 
-    - name: Build application
-      run: |
-        python main.py build
-        
-    - name: Upload binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: binary_release
-        path: r/release
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./task/__pycache__/main.cpython-39.pyc
+          asset_name: main
+          asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
